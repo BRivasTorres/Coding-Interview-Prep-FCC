@@ -2,17 +2,28 @@
 // Compare and update the inventory stored in a 2D array against a second 2D array of a fresh delivery. Update the current existing inventory item quantities (in arr1). If an item cannot be found, add the new item and quantity into the inventory array. The returned inventory array should be in alphabetical order by item.
 
 function updateInventory(arr1, arr2) {
-    const newArr = []    
-    for(let i = 0; i < arr1.length; i++) {
-        for(let j = 0; j < arr1.length; j++) {
-            let expresion = arr1[i][1] === arr2[j][1]
-            if(expresion) {
-                newArr.push(arr2[j])
-            } 
+    const mergedInventory = [...arr1, ...arr2];
+    
+    const inventoryObj = {};
+    
+    for (const item of mergedInventory) {
+        const itemName = item[1];
+        const quantity = item[0];
+        
+        if (inventoryObj[itemName]) {
+            inventoryObj[itemName] += quantity;
+        } else {
+            inventoryObj[itemName] = quantity;
         }
     }
     
-    console.log(newArr)
+    const updatedInventory = [];
+    for (const itemName in inventoryObj) {
+        updatedInventory.push([inventoryObj[itemName], itemName]);
+    }
+    
+    updatedInventory.sort((a, b) => a[1].localeCompare(b[1]));
+    
 }
 
 let curInv = [
